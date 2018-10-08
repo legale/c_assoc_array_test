@@ -1,7 +1,7 @@
 #ifndef _SINGLE_LIST
 #define _SINGLE_LIST
 /*
- * Single linked list structure v0.2
+ * Single linked list structure v0.3
  */
 
 #include <stdlib.h>     //malloc() calloc() free()
@@ -32,6 +32,10 @@ INLINE list *list_unshift(list *lst, unsigned char *key, unsigned int len, unsig
 INLINE list *list_push(list *lst, unsigned char *key, unsigned int len, unsigned long value);
 
 INLINE list_node *list_get(list *lst, unsigned char *key, unsigned int len);
+
+INLINE list_node *list_pop(list *lst);
+
+INLINE list_node *list_shift(list *lst);
 
 INLINE int list_remove(list *lst, unsigned char *key, unsigned int len);
 
@@ -115,6 +119,23 @@ inline list_node *list_get(list *lst, unsigned char *key, unsigned int len) {
     }
 }
 
+//get last element of the linked list
+inline list_node *list_pop(list *lst) {
+    if (lst == NULL || lst->tail == NULL) {
+        return NULL;
+    }else{
+        return lst->tail;
+    }
+}
+
+//get first element of the linked list
+inline list_node *list_shift(list *lst) {
+    if (lst == NULL || lst->head == NULL) {
+        return NULL;
+    }else{
+        return lst->head;
+    }
+}
 
 //remove list element by the key and key length
 inline int list_remove(list *lst, unsigned char *key, unsigned int len) {
