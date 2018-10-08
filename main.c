@@ -3,7 +3,7 @@
 
 
 void test(htable *array, unsigned char mode_flag, bool hash_flag) {
-    for (int i = 0, j = 45, k = 45, n = 45, m = 45; i < array->halfsize ; ++i) { //a ascii code is 97
+    for (int i = 0, j = 45, k = 45, n = 45, m = 45; i < array->size / 2 ; ++i) { //a ascii code is 97
         if (j > 122) { //z ascii code is 122
             exit(2);
             j = 45;
@@ -56,25 +56,24 @@ void test(htable *array, unsigned char mode_flag, bool hash_flag) {
     }
 }
 
-#define CYCLES 20
+#define CYCLES 10
 
 int main(){
 
     htable *array;
     array = init_array(20);
 
-
     clock_t begin, end;
     begin = clock();
     for(int i = 0; i < CYCLES; ++i) {
 
-        test(array, 1, false); //write
-        test(array, 2, false);//read
-        test(array, 3, false);//remove
+       test(array, 1, false); //write
+       test(array, 2, false);//read
+       test(array, 3, false);//remove
     }
     end = clock();
 
-    printf("array phphash + crc32:   %u s\n", (unsigned int) (end - begin) / 1000000); //s
+    printf("array DJBX33A hash:   %u s\n", (unsigned int) (end - begin) / 1000000); //s
     printf("array size:              %i\n", (unsigned int)array->size );
     printf("array load factor:       %f\n", (float)array->elements /  array->size);
     printf("collision factor:        %f\n", (float) array->collisions / array->halfsize);
@@ -84,7 +83,7 @@ int main(){
     printf("\n\n");
 
     htable *array2;
-    array2 = init_array(20);
+    array2 = init_array_(20);
 
     begin = clock();
     for(int i = 0; i < CYCLES ; ++i) {
@@ -94,7 +93,7 @@ int main(){
         test(array2, 3, true);//remove
     }
     end = clock();
-    printf("array php hash only:     %u s\n", (unsigned int) (end - begin) / 1000000); //s
+    printf("array crc32 + DJBX33A hash:     %u s\n", (unsigned int) (end - begin) / 1000000); //s
     printf("array size:              %i\n", (unsigned int)array2->size );
     printf("array load factor:       %f\n", (float)array2->elements /  array2->size);
     printf("collision factor:        %f\n", (float) array2->collisions / array2->halfsize);
